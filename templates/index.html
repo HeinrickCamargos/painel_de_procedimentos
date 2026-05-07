@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="fw-black text-dark m-0">Procedimentos</h1>
+        <a href="/novo_bloco" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm fw-bold">+ Novo Bloco</a>
+    </div>
+
+    <div class="search-section">
+        <form action="/" method="GET" class="row g-3">
+            <div class="col-md-9">
+                <input type="text" name="busca" class="form-control form-control-lg border-0 bg-light px-4"
+                       placeholder="O que você deseja localizar?" value="{{ busca if busca else '' }}">
+            </div>
+            <div class="col-md-3 d-grid">
+                <button class="btn btn-dark btn-lg rounded-3" type="submit">Localizar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="dashboard-grid">
+        {% if busca %}
+        {% for p in procedimentos %}
+        <div class="card-container">
+            <div class="card-bloco">
+                <a href="/procedimento/{{ p.id }}" class="text-decoration-none">
+                    <div class="card-content">
+                        <span class="badge bg-primary-subtle text-primary mb-2 px-3 py-2 rounded-pill fw-bold"
+                              style="font-size: 0.7rem;">PROCEDIMENTO</span>
+                        <h5>{{ p.titulo }}</h5>
+                        <small class="text-muted">No bloco: <strong>{{ p.bloco_pai.titulo }}</strong></small>
+                    </div>
+                </a>
+
+                <div class="card-footer-custom">
+                    <small class="text-muted">{{ p.data_criacao.strftime('%d/%m/%y') }}</small>
+                    <form action="/deletar_procedimento/{{ p.id }}" method="POST" class="m-0">
+                        <button type="submit" class="btn-excluir-interno"
+                                onclick="return confirm('Excluir este procedimento?')">Excluir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        {% for b in blocos %}
+        <div class="card-container">
+            <div class="card-bloco">
+                <a href="/bloco/{{ b.id }}" class="text-decoration-none">
+                    <div class="card-content">
+                        <h5>{{ b.titulo }}</h5>
+                    </div>
+                </a>
+
+                <div class="card-footer-custom">
+                    <span class="badge-count">{{ b.procedimentos|length }} Itens</span>
+                    <form action="/deletar_bloco/{{ b.id }}" method="POST" class="m-0">
+                        <button type="submit" class="btn-excluir-interno"
+                                onclick="return confirm('Excluir este bloco e todos os seus procedimentos?')">Excluir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    {% if not blocos and not procedimentos %}
+    <div class="text-center mt-5 py-5">
+        <h3 class="text-muted">Nenhum registro encontrado.</h3>
+        <a href="/" class="btn btn-outline-primary mt-3">Limpar busca e voltar</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

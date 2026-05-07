@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="header-perfil d-flex justify-content-between align-items-center border-start border-primary border-5">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Painel Geral</a></li>
+                    <li class="breadcrumb-item active">Ver Bloco</li>
+                </ol>
+            </nav>
+            <h1 class="fw-black m-0">{{ bloco.titulo }}</h1>
+        </div>
+        <div class="text-end">
+            <a href="/novo_procedimento/{{ bloco.id }}" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                + Novo Procedimento
+            </a>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-3">
+        <h4 class="fw-bold m-0">Procedimentos Cadastrados</h4>
+        <span class="badge bg-secondary ms-2 rounded-pill">{{ bloco.procedimentos|length }}</span>
+    </div>
+
+    <div class="procedimentos-grid">
+        {% for p in bloco.procedimentos %}
+        <div class="card-container">
+            <div class="card-procedimento">
+                <a href="/procedimento/{{ p.id }}" class="text-decoration-none">
+                    <div class="card-content">
+                        <h5>{{ p.titulo }}</h5>
+                        <p class="descricao-previa">{{ p.descricao|striptags }}</p>
+                    </div>
+                </a>
+
+                <div class="card-footer-custom">
+                <span class="data-info">
+                    📅 {{ p.data_criacao.strftime('%d/%m/%Y') }}
+                </span>
+                    <form action="/deletar_procedimento/{{ p.id }}" method="POST" class="m-0">
+                        <button type="submit" class="btn-excluir-interno"
+                                onclick="return confirm('Excluir este procedimento?')">
+                            Excluir
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+    </div>
+    <div class="text-center py-5 bg-white rounded-4 shadow-sm border mt-3">
+        <p class="text-muted m-0">Nenhum procedimento encontrado neste bloco.</p>
+    </div>
+    <div style="display:none"> {% endfor %}
+    </div>
+</div>
+{% endblock %}

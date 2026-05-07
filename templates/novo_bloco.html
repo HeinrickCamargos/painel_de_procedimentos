@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="setup-container">
+        <div class="text-center mb-5">
+            <div class="icon-box">
+                📂
+            </div>
+            <h2 class="fw-black">Novo Bloco</h2>
+            <p class="text-muted">Dê um nome ao bloco para organizar seus novos procedimentos.</p>
+        </div>
+
+        <form method="POST">
+            <div class="input-group-custom">
+                <label>Título do Bloco</label>
+                <input type="text" name="titulo" placeholder="Ex: FAQ, Procedimento" required autofocus>
+            </div>
+
+            <button type="submit" class="btn-create-user shadow">Criar Bloco</button>
+
+            <div class="text-center mt-4">
+                <a href="/" class="text-muted text-decoration-none small fw-bold">
+                    Voltar para o início
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
